@@ -1,22 +1,21 @@
 package com.clinic.privateclinic.domain.staff;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Service
 public class StaffService {
-    private List<Staff> staffList;
-    private static StaffService service;
+    private List<Staff> staffList = new ArrayList<>();
 
-    public static StaffService getInstance(){
-        if (service == null){
-            service = new StaffService();
-        }
-        return service;
+    public void setStaffList(final List<Staff> staffList) {
+        this.staffList = staffList;
+    }
+
+    public Set<Staff> findByName(final String name){
+        return staffList.stream().filter(staff -> staff.getName().contains(name)).collect(Collectors.toSet());
     }
 }

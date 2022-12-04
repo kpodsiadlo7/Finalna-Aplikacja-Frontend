@@ -1,38 +1,27 @@
 package com.clinic.privateclinic.domain.patient;
 
-import com.clinic.privateclinic.domain.staff.Staff;
-import com.clinic.privateclinic.restapi.client.RestApiClient;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.stereotype.Component;
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@Component
 public class PatientService {
-    private List<Patient> patientList;
-    private RestApiClient restApiClient;
-    private static PatientService service;
+
+    private static PatientService patientService;
+    private List<Patient> patientList = new ArrayList<>();
 
     public static PatientService getInstance(){
-        if (service == null){
-            service = new PatientService();
-        }
-        return service;
+        if (patientService == null)
+            patientService = new PatientService();
+
+        return patientService;
     }
 
-    public List<Patient> getPatientList() {
-        return restApiClient.getAllPatients();
+    public void setPatientList(final List<Patient> patientList) {
+        this.patientList = patientList;
     }
 
-    public void save(final Patient patient) {
-        this.patientList.add(patient);
-    }
-    public void delete(final Patient patient) {
-        this.patientList.remove(patient);
+    public Set<Patient> findByName(final String name) {
+        return patientList.stream().filter(patient -> patient.getName().contains(name)).collect(Collectors.toSet());
     }
 }

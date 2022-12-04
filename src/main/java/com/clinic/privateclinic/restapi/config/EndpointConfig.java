@@ -16,4 +16,6 @@ public class EndpointConfig {
     private String allStaffEndpoint;
     @Value("${api.endpoint.reservation}")
     private String reservation;
+    @Value("${api.endpoint.clinics}")
+    private String clinics;
 }
