@@ -1,5 +1,7 @@
 package com.clinic.privateclinic.domain.clinic;
 
+import com.clinic.privateclinic.domain.grade.Grade;
+import com.clinic.privateclinic.domain.staff.Staff;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -16,5 +18,6 @@ public class PrivateClinic {
     private int staffQuantity;
     private int hospitalizedQuantity;
     private double grade;
-    private List<ClinicGrade> gradesList = new ArrayList<>();
+    private List<Grade> gradeList = new ArrayList<>();
+    private List<Staff> staffList = new ArrayList<>();
 }

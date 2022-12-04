@@ -14,7 +14,7 @@ import com.vaadin.flow.data.binder.Binder;
 
 import java.io.IOException;
 
-public class RegisterPatient extends FormLayout {
+public class RegisterPatientClient extends FormLayout {
     private final TextField name = new TextField("Name");
     private final TextField surname = new TextField("Surname");
     private final TextField age = new TextField("Age");
@@ -27,7 +27,7 @@ public class RegisterPatient extends FormLayout {
     private Button registerButton = new Button("Register");
     private Binder<Patient> patientBinder = new Binder<>(Patient.class);
 
-    public RegisterPatient(MainView mainView) {
+    public RegisterPatientClient(MainView mainView) {
         this.mainView = mainView;
         sexComboBox.setItems(Sex.values());
         vocation.setItems(Vocation.PATIENT);
@@ -50,7 +50,7 @@ public class RegisterPatient extends FormLayout {
             }
         });
     }
-    public void register(final String name, final String surname, final String age, final Sex sex,
+    private void register(final String name, final String surname, final String age, final Sex sex,
                          final String reasonComingToClinic, final String date, final Currency currency) throws IOException, InterruptedException {
         mainView.register(name, surname, age, sex, reasonComingToClinic,date,currency);
         mainView.refreshPatient();

@@ -20,8 +20,4 @@ public class PatientService {
     public void setPatientList(final List<Patient> patientList) {
         this.patientList = patientList;
     }
-
-    public Set<Patient> findByName(final String name) {
-        return patientList.stream().filter(patient -> patient.getName().contains(name)).collect(Collectors.toSet());
-    }
 }

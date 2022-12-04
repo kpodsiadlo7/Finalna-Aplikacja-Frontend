@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class Patient {
-    private int id;
+    private long id;
     private String reasonComingToClinic;
     private String name;
     private String surname;

@@ -4,16 +4,19 @@ import com.clinic.privateclinic.domain.clinic.PrivateClinic;
 import com.clinic.privateclinic.domain.clinic.PrivateClinicService;
 import com.clinic.privateclinic.domain.enums.Currency;
 import com.clinic.privateclinic.domain.enums.Sex;
+import com.clinic.privateclinic.domain.grade.Grade;
 import com.clinic.privateclinic.domain.patient.Patient;
 import com.clinic.privateclinic.domain.patient.PatientService;
-import com.clinic.privateclinic.restapi.client.RegisterPatient;
+import com.clinic.privateclinic.restapi.client.GradeClient;
+import com.clinic.privateclinic.restapi.client.RegisterPatientClient;
 import com.clinic.privateclinic.restapi.client.RestApiClient;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,32 +30,40 @@ public class MainView extends VerticalLayout {
     private final PrivateClinicService privateClinicService = PrivateClinicService.getInstance();
     private final Grid<Patient> patientGrid = new Grid<>(Patient.class);
     private final Grid<PrivateClinic> clinicGrid = new Grid<>(PrivateClinic.class);
-    private RegisterPatient registerPatient = new RegisterPatient(this);
-    private TextField filter = new TextField();
+    private final Grid<Grade> gradeGrid = new Grid<>(Grade.class);
+    private RegisterPatientClient registerPatientClient = new RegisterPatientClient(this);
+    private GradeClient gradeClient = new GradeClient(this);
 
     private final Button buttonPatientRefresh = new Button("Refresh");
     private final Button buttonClinicRefresh = new Button("Refresh");
 
 
     public MainView() {
-        filter.setPlaceholder("SEARCH BY NAME");
-        filter.setClearButtonVisible(true);
-        filter.setValueChangeMode(ValueChangeMode.EAGER);
-        filter.addValueChangeListener(update -> findByName());
+        Text patientsText = new Text("PATIENTS LIST");
         patientGrid.setColumns("id","name","surname","sex","vocation","age","reasonComingToClinic");
-        add(filter,patientGrid,buttonPatientRefresh);
+        add(patientGrid,patientsText,buttonPatientRefresh);
         buttonPatientRefresh.addClickListener(update -> refreshPatient());
-
-        HorizontalLayout createPatient = new HorizontalLayout(patientGrid,registerPatient);
+        HorizontalLayout createPatient = new HorizontalLayout(patientGrid, registerPatientClient);
         createPatient.setSizeFull();
         patientGrid.setSizeFull();
         add(createPatient);
 
+
+        Text clinicText = new Text("CLINIC INFO");
         clinicGrid.setColumns("id","clinicName","city","street","staffQuantity","hospitalizedQuantity","grade");
-        add(clinicGrid,buttonClinicRefresh);
+        gradeGrid.setColumns("nickname","description","grade");
+        add(clinicGrid,gradeGrid,clinicText,buttonClinicRefresh);
+        HorizontalLayout clinicGrade = new HorizontalLayout(clinicGrid,gradeGrid);
+        HorizontalLayout all = new HorizontalLayout(clinicGrade,gradeClient);
+        clinicGrade.setSizeFull();
+        clinicGrid.setSizeFull();
+        gradeGrid.setSizeFull();
+        all.setSizeFull();
+        add(all);
         buttonClinicRefresh.addClickListener(update -> refreshClinic());
         try {
         clinicGrid.asSingleSelect().addValueChangeListener(event -> setClinicId(event.getValue().getId()));
+        patientGrid.asSingleSelect().addValueChangeListener(event -> setPatientName(event.getValue().getId()));
         }catch (Exception e){
             refreshClinic();
         }
@@ -63,20 +74,20 @@ public class MainView extends VerticalLayout {
     void setClinicId(final int clinicId) {
         restApiClient.setClinicId(clinicId);
     }
+    void setPatientName(final long patientId){
+        restApiClient.setPatientName(patientId);
+    }
 
     public void refreshClinic() {
         List<PrivateClinic> privateClinics = restApiClient.getAllClinics();
         privateClinicService.setPrivateClinicList(privateClinics);
+        gradeGrid.setItems(privateClinicService.getGradesList());
         try {
-        clinicGrid.setItems(privateClinics);
+            clinicGrid.setItems(privateClinics);
         } catch (Exception e){
             setClinicId(0);
             refreshClinic();
         }
-    }
-
-    public void findByName(){
-        patientGrid.setItems(patientService.findByName(filter.getValue()));
     }
 
     public void refreshPatient() {
@@ -88,5 +99,9 @@ public class MainView extends VerticalLayout {
     public void register(final String name, final String surname, final String age, final Sex sex,
                          final String reasonComingToClinic, final String date, final Currency currency) {
         restApiClient.register(name, surname, age, sex, reasonComingToClinic,date,currency);
+    }
+
+    public void rate(final String description, final int grade) {
+        restApiClient.rateClinic(description,grade);
     }
 }
