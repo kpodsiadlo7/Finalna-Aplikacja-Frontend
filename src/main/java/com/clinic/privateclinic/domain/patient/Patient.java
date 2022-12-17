@@ -5,6 +5,8 @@ import com.clinic.privateclinic.domain.enums.Vocation;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Data
 @Component
 public class Patient {
@@ -15,4 +17,5 @@ public class Patient {
     private Sex sex;
     private Vocation vocation;
     private int age;
+    private List<DiseaseStory> diseaseStory;
 }

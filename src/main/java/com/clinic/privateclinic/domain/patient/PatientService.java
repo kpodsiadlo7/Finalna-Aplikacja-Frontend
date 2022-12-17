@@ -18,4 +18,12 @@ public class PatientService {
     public void setPatientList(final List<Patient> patientList) {
         this.patientList = patientList;
     }
+
+    public List<DiseaseStory> getPatientsDiseaseStory() {
+        List<DiseaseStory> diseaseStories = new ArrayList<>();
+        for (Patient diseaseStory: patientList){
+            diseaseStories.addAll(diseaseStory.getDiseaseStory());
+        }
+        return diseaseStories;
+    }
 }

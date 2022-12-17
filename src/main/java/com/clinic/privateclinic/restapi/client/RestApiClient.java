@@ -6,12 +6,16 @@ import com.clinic.privateclinic.domain.enums.Sex;
 import com.clinic.privateclinic.domain.patient.Patient;
 import com.clinic.privateclinic.restapi.config.EndpointConfig;
 import com.nimbusds.jose.shaded.json.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,10 +25,18 @@ import java.net.URI;
 import java.util.*;
 
 @Component
-@RequiredArgsConstructor
+@Data
 public class RestApiClient {
-    private final EndpointConfig config;
-    private final RestTemplate restTemplate;
+    private static RestApiClient restApiClient;
+    private static RestApiClient getInstance(){
+        if (restApiClient == null)
+            restApiClient = new RestApiClient();
+        return restApiClient;
+    }
+    @Autowired
+    private EndpointConfig config;
+    @Autowired
+    private RestTemplate restTemplate;
     private int clinicId = 14;
     private long patientId = 0L;
 
