@@ -9,6 +9,9 @@ import com.clinic.privateclinic.domain.patient.DiseaseStory;
 import com.clinic.privateclinic.domain.patient.Patient;
 import com.clinic.privateclinic.domain.patient.PatientService;
 import com.clinic.privateclinic.restapi.client.*;
+import com.clinic.privateclinic.restapi.client.GradeClient;
+import com.clinic.privateclinic.restapi.dto.RatesDto;
+import com.clinic.privateclinic.restapi.dto.WeatherDto;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -32,6 +35,7 @@ public class MainView extends VerticalLayout {
     private final Grid<DiseaseStory> diseaseStoryGrid = new Grid<>(DiseaseStory.class);
     private RegisterPatientClient registerPatientClient = new RegisterPatientClient(this);
     private GradeClient gradeClient = new GradeClient(this);
+    private WeatherClient weatherClient = new WeatherClient(this);
 
     private final Button buttonPatientRefresh = new Button("Refresh");
     private final Button buttonClinicRefresh = new Button("Refresh");
@@ -52,15 +56,17 @@ public class MainView extends VerticalLayout {
         Text clinicGradeText = new Text("CLINIC GRADE");
         Text diseaseStoryText = new Text("DISEASE PATIENTS STORY");
         clinicGrid.setColumns("id","clinicName","city","street","staffQuantity","hospitalizedQuantity","grade");
-        gradeGrid.setColumns("nickname","description","grade");
+        gradeGrid.setColumns("patientId","nickname","description","grade");
         diseaseStoryGrid.setColumns("patientId","description","date");
-        VerticalLayout gradeAndClinicAndDisease = new VerticalLayout(clinicGrid,clinicGradeText,gradeGrid,diseaseStoryText,diseaseStoryGrid);
+        VerticalLayout gradeAndClinic = new VerticalLayout(clinicGrid,clinicGradeText,gradeGrid,diseaseStoryText);
         HorizontalLayout clinicAndButton = new HorizontalLayout(clinicText,buttonClinicRefresh);
-        add(gradeAndClinicAndDisease,clinicAndButton);
-        HorizontalLayout all = new HorizontalLayout(gradeAndClinicAndDisease,gradeClient);
+        add(gradeAndClinic,clinicAndButton);
+        HorizontalLayout all = new HorizontalLayout(gradeAndClinic, gradeClient);
         all.setSizeFull();
         add(all);
-        diseaseStoryGrid.setSizeFull();
+        HorizontalLayout diseaseStoryWithWeatherApi = new HorizontalLayout(diseaseStoryGrid,weatherClient);
+        diseaseStoryWithWeatherApi.setSizeFull();
+        add(diseaseStoryWithWeatherApi);
         buttonClinicRefresh.addClickListener(update -> refreshClinic());
         try {
         clinicGrid.asSingleSelect().addValueChangeListener(event -> setClinicId(event.getValue().getId()));
@@ -108,14 +114,19 @@ public class MainView extends VerticalLayout {
     }
 
     public String setEurRate() {
-        Optional<Rates> rate = Optional.ofNullable(restApiClient.getEurFromNBP().get().getRates().get(0));
-        Double eurRate = rate.stream().map(Rates::getMid).findFirst().get();
+        Optional<RatesDto> rate = Optional.ofNullable(restApiClient.getEurFromNBP().get().getRates().get(0));
+        Double eurRate = rate.stream().map(RatesDto::getMid).findFirst().get();
         return Double.toString(eurRate);
     }
 
     public String setUsdRate() {
-        Optional<Rates> rate = Optional.ofNullable(restApiClient.getUsdFromNBP().get().getRates().get(0));
-        Double usdRate = rate.stream().map(Rates::getMid).findFirst().get();
+        Optional<RatesDto> rate = Optional.ofNullable(restApiClient.getUsdFromNBP().get().getRates().get(0));
+        Double usdRate = rate.stream().map(RatesDto::getMid).findFirst().get();
         return Double.toString(usdRate);
+    }
+
+    public double getTemperature(final String location) {
+        Optional<WeatherDto> weatherDto = restApiClient.getWeatherFromLocation(location);
+        return weatherDto.get().getTemp();
     }
 }
