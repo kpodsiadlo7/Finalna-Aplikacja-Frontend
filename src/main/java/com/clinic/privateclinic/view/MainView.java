@@ -100,7 +100,11 @@ public class MainView extends VerticalLayout {
     public void refreshPatient() {
         List<Patient> patients = restApiClient.getAllPatients();
         patientService.setPatientList(patients);
+        try {
         patientGrid.setItems(patients);
+        } catch (Exception e){
+            refreshPatient();
+        }
         diseaseStoryGrid.setItems(patientService.getPatientsDiseaseStory());
     }
 
@@ -128,5 +132,10 @@ public class MainView extends VerticalLayout {
     public double getTemperature(final String location) {
         Optional<WeatherDto> weatherDto = restApiClient.getWeatherFromLocation(location);
         return weatherDto.get().getTemp();
+    }
+
+    public void setDiseaseStory(final String description) {
+        restApiClient.addDiseaseStory(description);
+        refreshPatient();
     }
 }

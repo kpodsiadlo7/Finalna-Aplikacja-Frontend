@@ -24,4 +24,6 @@ public class EndpointConfig {
     private String weatherTemperature;
     @Value("${api.endpoint.currency}")
     private String nbpCurrency;
+    @Value("${api.endpoint.disease}")
+    private String disease;
 }

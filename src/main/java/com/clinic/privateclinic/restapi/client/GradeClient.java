@@ -37,13 +37,13 @@ public class GradeClient extends FormLayout {
                     description.getValue(),
                     grade)
         );
-        //diseaseButton.addClickListener(event -> );
+        diseaseButton.addClickListener(event -> setDiseaseStory(diseaseDescription.getValue()));
     }
     private void rate(final String description, final ComboBox<Integer> grade){
         mainView.rate(description,grade.getValue());
         mainView.refreshClinic();
     }
-    private void setDiseaseStory(){
-
+    private void setDiseaseStory(final String description){
+        mainView.setDiseaseStory(description);
     }
 }
