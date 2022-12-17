@@ -4,7 +4,7 @@ import com.clinic.privateclinic.domain.enums.Currency;
 import com.clinic.privateclinic.domain.enums.Sex;
 import com.clinic.privateclinic.domain.enums.Vocation;
 import com.clinic.privateclinic.domain.patient.Patient;
-import com.clinic.privateclinic.view.MainView;
+import com.clinic.privateclinic.view.RegisterView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -23,12 +23,12 @@ public class RegisterPatientClient extends FormLayout {
     private final ComboBox<Sex> sexComboBox = new ComboBox<>("Sex");
     private final ComboBox<Currency> currencyComboBox = new ComboBox<>("Currency");
     private final ComboBox<Vocation> vocation = new ComboBox<>("Vocation");
-    private MainView mainView;
+    private RegisterView registerView;
     private Button registerButton = new Button("Register");
     private Binder<Patient> patientBinder = new Binder<>(Patient.class);
 
-    public RegisterPatientClient(MainView mainView) {
-        this.mainView = mainView;
+    public RegisterPatientClient(RegisterView registerView) {
+        this.registerView = registerView;
         sexComboBox.setItems(Sex.values());
         vocation.setItems(Vocation.PATIENT);
         currencyComboBox.setItems(Currency.values());
@@ -52,8 +52,8 @@ public class RegisterPatientClient extends FormLayout {
     }
     private void register(final String name, final String surname, final String age, final Sex sex,
                          final String reasonComingToClinic, final String date, final Currency currency) throws IOException, InterruptedException {
-        mainView.register(name, surname, age, sex, reasonComingToClinic,date,currency);
-        mainView.refreshPatient();
-        mainView.refreshClinic();
+        registerView.register(name, surname, age, sex, reasonComingToClinic,date,currency);
+        registerView.refreshPatient();
+        registerView.refreshClinic();
     }
 }

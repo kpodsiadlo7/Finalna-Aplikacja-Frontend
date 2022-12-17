@@ -26,7 +26,7 @@ import java.util.*;
 public class RestApiClient {
     private final EndpointConfig config;
     private final RestTemplate restTemplate;
-    private int clinicId = 0;
+    private int clinicId = 14;
     private long patientId = 0L;
 
     public List<Patient> getAllPatients() {
