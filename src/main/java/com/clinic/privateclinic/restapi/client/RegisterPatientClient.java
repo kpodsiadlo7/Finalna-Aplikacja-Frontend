@@ -4,14 +4,12 @@ import com.clinic.privateclinic.domain.enums.Currency;
 import com.clinic.privateclinic.domain.enums.Sex;
 import com.clinic.privateclinic.domain.enums.Vocation;
 import com.clinic.privateclinic.domain.patient.Patient;
-import com.clinic.privateclinic.view.RegisterView;
+import com.clinic.privateclinic.view.MainView;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import lombok.Getter;
@@ -30,24 +28,16 @@ public class RegisterPatientClient extends FormLayout {
     private double usd = 4.0;
     private double eur = 4.5;
 
-    public void setUsd(final double usd) {
-        this.usd = usd;
-    }
-
-    public void setEur(final double eur) {
-        this.eur = eur;
-    }
-
     private final ComboBox<Sex> sexComboBox = new ComboBox<>("Sex");
     private final ComboBox<Currency> currencyComboBox = new ComboBox<>("Choose Currency");
     private final ComboBox<Vocation> vocation = new ComboBox<>("Vocation");
-    private RegisterView registerView;
+    private MainView mainView;
     private Button registerButton = new Button("Register");
     private Button rateRefreshButton = new Button("Refresh rate");
     private Binder<Patient> patientBinder = new Binder<>(Patient.class);
 
-    public RegisterPatientClient(RegisterView registerView) {
-        this.registerView = registerView;
+    public RegisterPatientClient(MainView mainView) {
+        this.mainView = mainView;
         eurRate.setText("\nEUR rate " +getEur() +",");
         usdRate.setText("\tUSD rate " +getUsd());
         sexComboBox.setItems(Sex.values());
@@ -76,14 +66,14 @@ public class RegisterPatientClient extends FormLayout {
     }
 
     private void setCurrency() {
-        eurRate.setText("\nEUR rate " +registerView.setEurRate() +",");
-        usdRate.setText("\tUSD rate " +registerView.setUsdRate());
+        eurRate.setText("\nEUR rate " + mainView.setEurRate() +",");
+        usdRate.setText("\tUSD rate " + mainView.setUsdRate());
     }
 
     private void register(final String name, final String surname, final String age, final Sex sex,
                          final String reasonComingToClinic, final String date, final Currency currency) throws IOException, InterruptedException {
-        registerView.register(name, surname, age, sex, reasonComingToClinic,date,currency);
-        registerView.refreshPatient();
-        registerView.refreshClinic();
+        mainView.register(name, surname, age, sex, reasonComingToClinic,date,currency);
+        mainView.refreshPatient();
+        mainView.refreshClinic();
     }
 }

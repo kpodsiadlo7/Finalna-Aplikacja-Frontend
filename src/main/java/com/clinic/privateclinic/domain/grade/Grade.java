@@ -1,10 +1,10 @@
 package com.clinic.privateclinic.domain.grade;
 
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
+@Data
 @Component
-@Getter
 public class Grade {
     private long id;
     private String nickname;
