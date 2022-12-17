@@ -20,4 +20,8 @@ public class EndpointConfig {
     private String clinics;
     @Value("${api.endpoint.rate}")
     private String rateClinic;
+    @Value("${api.endpoint.weather}")
+    private String weatherTemperature;
+    @Value("${api.endpoint.currency}")
+    private String nbpCurrency;
 }

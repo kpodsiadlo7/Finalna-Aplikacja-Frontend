@@ -7,7 +7,6 @@ import com.clinic.privateclinic.domain.patient.Patient;
 import com.clinic.privateclinic.restapi.config.EndpointConfig;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -34,11 +33,28 @@ public class RestApiClient {
         Patient[] patientsResponse = restTemplate.getForObject(url, Patient[].class);
         return Optional.ofNullable(patientsResponse).map(Arrays::asList).orElse(Collections.emptyList());
     }
-
     public List<PrivateClinic> getAllClinics(){
         URI url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl() + config.getClinics()).build().encode().toUri();
         PrivateClinic[] patientsResponse = restTemplate.getForObject(url, PrivateClinic[].class);
         return Optional.ofNullable(patientsResponse).map(Arrays::asList).orElse(Collections.emptyList());
+    }
+
+    public Optional<WeatherClient> getWeatherFromLocation(final String location){
+        URI url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl()+config.getWeatherTemperature())
+                .queryParam("location",location).build().encode().toUri();
+        WeatherClient weatherResponse = restTemplate.getForObject(url,WeatherClient.class);
+        return Optional.ofNullable(weatherResponse);
+    }
+
+    public Optional<NBPClient> getEurFromNBP(){
+        URI url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl()+config.getNbpCurrency()+"/eur").build().encode().toUri();
+        NBPClient nbpResponse = restTemplate.getForObject(url,NBPClient.class);
+        return Optional.ofNullable(nbpResponse);
+    }
+    public Optional<NBPClient> getUsdFromNBP(){
+        URI url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl()+config.getNbpCurrency()+"/usd").build().encode().toUri();
+        NBPClient nbpResponse = restTemplate.getForObject(url,NBPClient.class);
+        return Optional.ofNullable(nbpResponse);
     }
 
     public void setClinicId(final int clinicId) {

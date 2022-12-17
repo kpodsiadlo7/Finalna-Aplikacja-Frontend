@@ -7,9 +7,7 @@ import com.clinic.privateclinic.domain.enums.Sex;
 import com.clinic.privateclinic.domain.grade.Grade;
 import com.clinic.privateclinic.domain.patient.Patient;
 import com.clinic.privateclinic.domain.patient.PatientService;
-import com.clinic.privateclinic.restapi.client.GradeClient;
-import com.clinic.privateclinic.restapi.client.RegisterPatientClient;
-import com.clinic.privateclinic.restapi.client.RestApiClient;
+import com.clinic.privateclinic.restapi.client.*;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,6 +17,9 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Route("/register")
 public class RegisterView extends VerticalLayout {
@@ -101,5 +102,17 @@ public class RegisterView extends VerticalLayout {
 
     public void rate(final String description, final int grade) {
         restApiClient.rateClinic(description,grade);
+    }
+
+    public String setEurRate() {
+        Optional<Rates> rate = Optional.ofNullable(restApiClient.getEurFromNBP().get().getRates().get(0));
+        Double eurRate = rate.stream().map(Rates::getMid).findFirst().get();
+        return Double.toString(eurRate);
+    }
+
+    public String setUsdRate() {
+        Optional<Rates> rate = Optional.ofNullable(restApiClient.getUsdFromNBP().get().getRates().get(0));
+        Double usdRate = rate.stream().map(Rates::getMid).findFirst().get();
+        return Double.toString(usdRate);
     }
 }
