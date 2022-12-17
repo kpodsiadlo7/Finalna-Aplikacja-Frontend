@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Grade {
     private long id;
+    private long patientId;
     private String nickname;
     private String description;
     private double grade;

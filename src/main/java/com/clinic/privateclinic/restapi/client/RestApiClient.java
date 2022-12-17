@@ -4,12 +4,11 @@ import com.clinic.privateclinic.domain.clinic.PrivateClinic;
 import com.clinic.privateclinic.domain.enums.Currency;
 import com.clinic.privateclinic.domain.enums.Sex;
 import com.clinic.privateclinic.domain.patient.Patient;
+import com.clinic.privateclinic.restapi.dto.NBPDto;
+import com.clinic.privateclinic.restapi.dto.WeatherDto;
 import com.clinic.privateclinic.restapi.config.EndpointConfig;
 import com.nimbusds.jose.shaded.json.JSONObject;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -51,21 +50,21 @@ public class RestApiClient {
         return Optional.ofNullable(patientsResponse).map(Arrays::asList).orElse(Collections.emptyList());
     }
 
-    public Optional<WeatherClient> getWeatherFromLocation(final String location){
+    public Optional<WeatherDto> getWeatherFromLocation(final String location){
         URI url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl()+config.getWeatherTemperature())
                 .queryParam("location",location).build().encode().toUri();
-        WeatherClient weatherResponse = restTemplate.getForObject(url,WeatherClient.class);
+        WeatherDto weatherResponse = restTemplate.getForObject(url, WeatherDto.class);
         return Optional.ofNullable(weatherResponse);
     }
 
-    public Optional<NBPClient> getEurFromNBP(){
+    public Optional<NBPDto> getEurFromNBP(){
         URI url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl()+config.getNbpCurrency()+"/eur").build().encode().toUri();
-        NBPClient nbpResponse = restTemplate.getForObject(url,NBPClient.class);
+        NBPDto nbpResponse = restTemplate.getForObject(url, NBPDto.class);
         return Optional.ofNullable(nbpResponse);
     }
-    public Optional<NBPClient> getUsdFromNBP(){
+    public Optional<NBPDto> getUsdFromNBP(){
         URI url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl()+config.getNbpCurrency()+"/usd").build().encode().toUri();
-        NBPClient nbpResponse = restTemplate.getForObject(url,NBPClient.class);
+        NBPDto nbpResponse = restTemplate.getForObject(url, NBPDto.class);
         return Optional.ofNullable(nbpResponse);
     }
 

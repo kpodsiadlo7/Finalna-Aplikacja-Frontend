@@ -2,7 +2,6 @@ package com.clinic.privateclinic.restapi.client;
 
 import com.clinic.privateclinic.domain.grade.Grade;
 import com.clinic.privateclinic.view.MainView;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
