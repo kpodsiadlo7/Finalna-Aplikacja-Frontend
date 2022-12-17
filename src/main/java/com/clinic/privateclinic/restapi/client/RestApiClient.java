@@ -127,6 +127,14 @@ public class RestApiClient {
         }};
         openConnectionPut(url, data.toString());
     }
+    public void addDiseaseStory(final String description){
+        String url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl() + config.getDisease()+patientId)
+                .encode().toUriString();
+        var data = new JSONObject(){{
+            put("description", description);
+        }};
+        openConnectionPost(url,data.toString());
+    }
 
     private void openConnectionPost(final String url, final String s) {
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
