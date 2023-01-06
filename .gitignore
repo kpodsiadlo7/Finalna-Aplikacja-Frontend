@@ -23,6 +23,8 @@ bin/
 *.iws
 *.iml
 *.ipr
+*.json
+*.ts
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
