@@ -1,4 +1,4 @@
-# FRONTEND APPLICATION ROADMAP
+# FRONTEND APPLICATION INFORMATION
 
 #### Poniżej znajdują się technologie użyte w aplikacji
 * RestAPI 
