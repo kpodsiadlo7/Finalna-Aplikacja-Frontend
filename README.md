@@ -11,6 +11,7 @@
 * Lombok
 * Endpoint config
 * Core configuration
+* Singleton
 
 W aplikacji możemy zarejestrować się jako pacjent, uprzednio zaznaczając do której kliniki
 chcemy się zapisać. Możemy wybrać płatność w formie gotówki lub kartą z konkretną walutą, 
@@ -30,6 +31,6 @@ API, tym razem związana z pogodą, dzięki czemu możemy sprawdzić aktualną t
 lokalizacje.
 
 
-Poniżej znajduje się link do backendu aplikacji, która odpowiada za całą logikę
+### Poniżej znajduje się link do backendu aplikacji, która odpowiada za całą logikę
 ####
 https://github.com/kpodsiadlo7/Finalna-Aplikacja-Klinika-Backend
