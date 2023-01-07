@@ -1,4 +1,5 @@
 # FRONTEND APPLICATION INFORMATION
+#### Jest to mój w pełni samodzielny projekt aplikacji składającej się z backendu oraz frontendu.
 
 #### Poniżej znajdują się technologie użyte w aplikacji
 * RestAPI 
