@@ -22,7 +22,7 @@ public class RegisterPatientClient extends FormLayout {
     private final TextField surname = new TextField("Surname");
     private final TextField age = new TextField("Age");
     private final TextField reasonComingToClinic = new TextField("ReasonComingToClinic");
-    private final TextField date = new TextField("rrrr-mm-dd");
+    private final TextField date = new TextField("rrrr-mm-dd when do you want to come");
     private Text usdRate = new Text("USD rate");
     private Text eurRate = new Text("EUR rate");
     private double usd = 4.0;

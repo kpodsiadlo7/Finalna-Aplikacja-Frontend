@@ -36,8 +36,8 @@ public class RestApiClient {
     private EndpointConfig config;
     @Autowired
     private RestTemplate restTemplate;
-    private int clinicId = 14;
-    private long patientId = 0L;
+    private static int clinicId = 0;
+    private long patientId = 0;
 
     public List<Patient> getAllPatients() {
         URI url = UriComponentsBuilder.fromHttpUrl(config.getBaseUrl() + config.getAllPatientEndpoint()).build().encode().toUri();
